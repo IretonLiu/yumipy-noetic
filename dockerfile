@@ -24,4 +24,9 @@ RUN echo "source /opt/ros/noetic/setup.bash" > /root/.bashrc && echo "source /ro
 
 RUN apt-get update && apt-get install -y python-is-python3
 
+
 RUN pip install ipython
+
+ADD ./src src
+
+RUN cd ./src/autolab_core && python setup.py install
