@@ -1,12 +1,20 @@
 Bootstrap: docker
 FROM: ros:noetic-ros-core-focal
 
+%files
+    ./requirements.txt
+
 %post -c /bin/bash
-    apt-get update && apt-get install -y neovim tmux curl
-    apt-get install -y python3 python3-pip
+    apt-get update && apt-get install -y neovim tmux curl cmake
+    apt-get install -y python3 python3-pip python-is-python3
+    apt-get install -y ffmpeg libsm6 libxext6
     curl -sSL https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info | tic -x - 
 
 
 %post
-    cd /home/$USER/ROS/yumipy_ws
     pip install -r requirements.txt
+
+%post 
+    apt-get install -y ros-noetic-tf2 \
+    ros-noetic-tf2-ros
+
