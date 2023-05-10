@@ -26,9 +26,11 @@ if __name__ == '__main__':
 
     # Define how requests are handled (Call the corresponding method in the local class)
     def handle_request(req):
-        func = pickle.loads(req.func)
-        args = pickle.loads(req.args)
-        kwargs = pickle.loads(req.kwargs)
+        print("Handling request")
+        print(yumi_methods)
+        func = req.func
+        args = req.args
+        kwargs = req.kwargs
         
         if func == '__getattribute__':
             if verbose:

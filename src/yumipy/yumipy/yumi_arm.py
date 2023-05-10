@@ -113,7 +113,7 @@ class _YuMiEthernet(Process):
 
             while True:
                 try:
-                    self._socket.send(req_packet.req)
+                    self._socket.send(req_packet.req.encode())
                     break
                 except socket.error as e:
                     # TODO: better way to handle this mysterious bad file descriptor error
@@ -1189,6 +1189,7 @@ class YuMiArm_ROS:
         Also note that this is __getattr__, so things like __init__ and __dict__ WILL NOT trigger
         this function as the YuMiArm_ROS object already has these as attributes.
         """
+        print("Getting attribute: ")
         if name in YuMiArm.__dict__:
             def handle_remote_call(*args, **kwargs):
                 """ Handle the remote call to some YuMiArm function.
@@ -1203,7 +1204,7 @@ class YuMiArm_ROS:
                 except rospy.ServiceException as e:
                     raise RuntimeError(
                         "Service call failed: {0}".format(str(e)))
-                return pickle.loads(response.ret)
+                return pickle.loads(response.ret.encode())
             return handle_remote_call
         else:
             rospy.wait_for_service(self.arm_service, timeout=self.timeout)
@@ -1214,7 +1215,7 @@ class YuMiArm_ROS:
             except rospy.ServiceException as e:
                 raise RuntimeError(
                     "Could not get attribute: {0}".format(str(e)))
-            return pickle.loads(response.ret)
+            return pickle.loads(response.ret.encode())
 
 
 class YuMiArmFactory:
